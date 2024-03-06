@@ -1,0 +1,71 @@
+<h2>User Login</h2>
+
+<form [formGroup]="myForm" (keydown.enter)="$event.preventDefault()">
+  <label for="">Full Name: </label>
+  <input type="text" placeholder="Enter your name" formControlName="name" [(ngModel)]="fname"><br>
+  <span *ngIf="myForm.get('name')?.hasError('required') && myForm.get('name')?.touched" style="color: red;">Name is
+      required!!!</span>
+  <span *ngIf="myForm.get('name')?.hasError('minlength') && myForm.get('name')?.touched" style="color: red;">Minimum 3
+      char required!!!</span><br>
+      <label for="">Email: </label>
+      <input type="text" placeholder="Enter your Email" formControlName="email" [(ngModel)]="Email"><br>
+      <span *ngIf="myForm.get('email')?.hasError('required') && myForm.get('email')?.touched"
+          style="color: red;">Email is required!!</span>
+      <span *ngIf="myForm.get('email')?.hasError('invalidEmail') && myForm.get('email')?.touched"
+          style="color: red;">Proper Email is required!!</span><br>
+      <label for="">Roles: </label>
+      <input type="text" placeholder="Enter your Roles" formControlName="roles"
+          [(ngModel)]="Roles"><br>
+      <span *ngIf="myForm.get('roles')?.hasError('required') && myForm.get('roles')?.touched"
+          style="color: red;">Role is required!!</span>
+      <span *ngIf="myForm.get('roles')?.hasError('minlength') && myForm.get('roles')?.touched"
+          style="color: red;">minimum 5 char is required!!</span><br>
+  <button  type="button" [disabled]="smit || myForm.invalid" (click)="submit()">submit</button>
+
+  <button [disabled]="!smit || myForm.invalid" (click)="update()">Update</button><br><br>
+</form>
+
+<label for="search">Search: </label>
+<input type="text" name="search" placeholder="Search by name or email" [(ngModel)]="searchTerm">
+
+<label for="sort">Sort by&nbsp;</label>
+<select [(ngModel)]="SortByParam">
+    <option value="name">Name</option>
+    <option value="email">Email</option>
+</select>
+
+<table border="2px">
+    <thead>
+        <tr>
+            <th>FullName</th>
+            <th>Email</th>
+            <th>Roles</th>
+            <th>Edit Button</th>
+            <th>Delete Button</th>
+        </tr>
+    </thead>
+    <tbody *ngFor="let item of items | paginate: { itemsPerPage: 10, currentPage: currentPage  } | filter:searchTerm | sort:[SortByParam,'send']">
+        <tr>
+            <td>{{item.name}}</td>
+            <td>{{item.email}}</td>
+            <td>{{item.roles}}</td>
+        <td style=" justify-content: center; gap: 5px;"><button
+                style="height: 22px; width: 80px; background-color: green; color: aliceblue;"
+                (click)="EditData(item)">Edit</button></td>
+        <td><button style=" height: 22px;width: 80px ;background-color: red; color: aliceblue;"
+                (click)="deleteData(item.id)">Delete</button></td>
+        </tr>
+    </tbody>
+</table>
+
+<pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+
+
+
+  
+
+
+
+
+
+
